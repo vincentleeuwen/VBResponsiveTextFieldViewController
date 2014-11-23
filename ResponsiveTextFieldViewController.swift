@@ -17,10 +17,13 @@ class ResponsiveTextFieldViewController : UIViewController
     var keyboardFrame: CGRect = CGRect.nullRect
     var keyboardIsShowing: Bool = false
     weak var activeTextField: UITextField?
+    var removeObsOnDisappear: Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
+        removeObsOnDisappear = removeObserverOnViewWillDisappear()
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
@@ -39,9 +42,24 @@ class ResponsiveTextFieldViewController : UIViewController
     
     }
     
+     
+    func removeObserverOnViewWillDisappear() -> Bool{
+        //This function was added to provide a way to workaround tab view controllers behavior
+        //which needs the observer to not be removed.
+        //If the view controller is controlled by a tab view controller, return false.
+        
+        //FOR DEFAULT BEHAVIOR, UNCOMMENT NEXT LINE
+        //return true
+        
+        fatalError("This method must be overridden")
+ 
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        if removeObsOnDisappear {
+            NSNotificationCenter.defaultCenter().removeObserver(self)
+        }
     }
     
     func keyboardWillShow(notification: NSNotification)
