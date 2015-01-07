@@ -1,3 +1,8 @@
+Fix to make it work with tab view controllers.
+You must override function 
+
+```func removeObserverOnViewWillDisappear() -> Bool```
+
 VBResponsiveTextFieldViewController
 ===================================
 
