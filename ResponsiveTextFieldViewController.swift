@@ -139,7 +139,10 @@ class ResponsiveTextFieldViewController : UIViewController
         self.activeTextField = nil
         // check if there is a nextField setup and follow if so
         if let nextField = textField.nextField {
-            nextField.becomeFirstResponder()
+            // make next field the first responder as long as its empty
+            if nextField.text == "" {
+                nextField.becomeFirstResponder()
+            }
         }
     }
     
