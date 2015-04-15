@@ -10,6 +10,19 @@
 import Foundation
 import UIKit
 
+private var kAssociationKeyNextField: UInt8 = 0
+
+extension UITextField {
+    var nextField: UITextField? {
+        get {
+            return objc_getAssociatedObject(self, &kAssociationKeyNextField) as? UITextField
+        }
+        set(newField) {
+            objc_setAssociatedObject(self, &kAssociationKeyNextField, newField, UInt(OBJC_ASSOCIATION_RETAIN))
+        }
+    }
+}
+
 class ResponsiveTextFieldViewController : UIViewController
 {
 
@@ -124,6 +137,10 @@ class ResponsiveTextFieldViewController : UIViewController
     {
         textField.resignFirstResponder()
         self.activeTextField = nil
+        // check if there is a nextField setup and follow if so
+        if let nextField = textField.nextField {
+            nextField.becomeFirstResponder()
+        }
     }
     
     func textFieldDidBeginEditing(textField: UITextField)
